@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<head> 
+  <!--58 lines of code (including whitespace)-->
+  <title>Change The Number Values!</title>
+  <style>
+    input[type="button"] {
+      padding: 10px;
+      margin-bottom: 10px;
+      margin-right: 10px;
+     
+    }
+    .GraySquare {
+      background-color: lightgray;
+      width: 400px;
+      height: 120px;
+      display: inline-block;
+      margin-right: 10px;
+      padding: 100px;
+      font-size: 50px;
+    }
+    body {
+      border: 5px solid black;
+      padding: 30px;
+      padding-top: 5px;
+      width: 770px;
+    }
+
+  </style>
+</head>
+<body>
+ 
+<h1>Number Saves!</h1>
+<input type="button" value="+1" onclick="ChangeCount1();"/>
+<input type="button" value="-1" onclick="ChangeCountMinus1();"/>
+<input type="button" value="Reset" onclick="Reset();"/>
+<div id="countdiv" class="GraySquare">0</div>
+
+<script>
+  let countNumber = Number(localStorage.number); //technically I don't need variable countNumber but it is a little neater/easier to use it as a placeholder 
+  document.getElementById("countdiv").innerHTML = countNumber; //This sets the number to what was stored
+    function ChangeCount1() {
+      document.getElementById("countdiv").innerHTML = countNumber += 1;
+      Save();
+    }
+    function ChangeCountMinus1() {
+      document.getElementById("countdiv").innerHTML = countNumber -= 1;
+      Save();
+    }
+    function Reset() {
+      document.getElementById("countdiv").innerHTML = 0;
+      countNumber = countNumber - countNumber;
+      Save();
+    }
+    function Save() {
+      localStorage.number = countNumber; //localStorage.number is updated
+    } 
+</script>
+</body>
+</html>
