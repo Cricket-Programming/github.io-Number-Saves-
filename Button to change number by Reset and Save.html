@@ -1,15 +1,37 @@
 <!DOCTYPE html>
 <head> 
-  <!--58 lines of code (including whitespace)-->
-  <title>Change The Number Values!</title>
+  <!--
+    V3
+    - Inefficient but fun - onclicks moved to a js loop
+    - body css class moved to top
+    - Coming Soon button grid layout
+
+  new changes to github
+  - added more buttons
+  - new function changeCount() is much more efficient and makes it easier to add more buttons
+  - some minor code fixes and changes
+  - for fun, I put in an unnecessary loop that takes the place of putting onclick="changeCount(someValue)" on each buttons
+  - changed to a grid layout for the buttons, not good yet but I'll fix it in the next update.  
+   -->
+  <title>Change The Number Values! With Reset and Save</title>
   <style>
-    input[type="button"] {
-      padding: 10px;
-      margin-bottom: 10px;
-      margin-right: 10px;
-     
+    body {
+      border: 5px solid black;
+      padding: 30px;
+      padding-top: 5px;
+      width: 770px;
+    }  
+    .num-btn-grid-container {
+      border: 1px solid black;
+      display: grid;
+      grid-template-rows: auto auto auto auto;
+      grid-template-columns: auto auto auto ;
+      column-gap: 0px;
     }
-    .GraySquare {
+    button {
+      width: auto;
+    }
+    .gray-square {
       background-color: lightgray;
       width: 400px;
       height: 120px;
@@ -18,42 +40,52 @@
       padding: 100px;
       font-size: 50px;
     }
-    body {
-      border: 5px solid black;
-      padding: 30px;
-      padding-top: 5px;
-      width: 770px;
-    }
 
   </style>
 </head>
 <body>
  
 <h1>Number Saves!</h1>
-<input type="button" value="+1" onclick="ChangeCount1();"/>
-<input type="button" value="-1" onclick="ChangeCountMinus1();"/>
-<input type="button" value="Reset" onclick="Reset();"/>
-<div id="countdiv" class="GraySquare">0</div>
+<div class="num-btn-grid-container">
+  <button>    +1</button>
+  <button>   +10</button>
+  <button>  +100</button>
+  <button> +1000</button>
+  <button>   -1</button>
+  <button>  -10</button>
+  <button> -100</button>
+  <button>-1000</button>
+  <button onclick="Reset()">Reset</button>
+</div>
 
+<div id="countDiv" class="gray-square">0</div>
+<div id="demo"></div>
 <script>
-  let countNumber = Number(localStorage.number); //technically I don't need variable countNumber but it is a little neater/easier to use it as a placeholder 
-  document.getElementById("countdiv").innerHTML = countNumber; //This sets the number to what was stored
-    function ChangeCount1() {
-      document.getElementById("countdiv").innerHTML = countNumber += 1;
-      Save();
-    }
-    function ChangeCountMinus1() {
-      document.getElementById("countdiv").innerHTML = countNumber -= 1;
-      Save();
-    }
-    function Reset() {
-      document.getElementById("countdiv").innerHTML = 0;
-      countNumber = countNumber - countNumber;
-      Save();
-    }
-    function Save() {
-      localStorage.number = countNumber; //localStorage.number is updated
-    } 
+  let changeValue = 1; //could just initialize array with [1,10,100,1000,-1,-10,-100,-1000] and get rid onf changeValue;
+  let paramArr = [];
+  for (let i=0; i < 8; i++) {
+    paramArr.push(changeValue);
+    document.getElementsByTagName("button")[i].onclick = function() { ChangeCount(paramArr[i]); }
+    changeValue *= 10;
+    if (changeValue === 10000) { changeValue = -1 } 
+  }
+  
+  let countNumber = Number(localStorage.getItem("num")); //technically I don't need variable countNumber but it is more readable and code is more efficient.
+  const countDiv = document.getElementById("countDiv");
+  countDiv.innerHTML = countNumber; //This sets the number to what was stored
+
+  function ChangeCount(changeValue) {
+    countDiv.innerHTML = countNumber += changeValue; 
+    Save();
+  }  
+  function Reset() {
+    countDiv.innerHTML = 0;
+    countNumber = 0; //Could be countNumber - countNumber
+    Save();
+  }
+  function Save() {
+    localStorage.setItem("num", countNumber); //Syntax: localStorage.setItem(key, value) , localStorage.getItem(key)
+  } 
 </script>
 </body>
 </html>
